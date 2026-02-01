@@ -146,9 +146,124 @@ python scripts/test_ui_predictions.py
 
 ---
 
+# Dockerisation du projet
+
+Cette section décrit comment lancer et utiliser le projet via Docker, sans installer Python ni dépendances localement.
+
+## Prérequis
+
+- **Docker Desktop installé et lancé**
+  - macOS / Windows : [Docker Desktop](https://www.docker.com/products/docker-desktop)
+  - Linux : Docker Engine + Docker Compose v2
+
+**Vérification :**
+```bash
+docker --version
+docker compose version
+```
+
+## Lancement rapide (1 commande)
+
+À la racine du projet :
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
+
+Une fois le conteneur lancé, l'application est accessible à l'adresse :
+
+**http://localhost:8502**
+
+Le port est configurable via le fichier `.env`.
+
+## Fonctionnement des ports
+
+- **Dans le conteneur :** Streamlit écoute sur le port `8501`
+- **Sur la machine hôte :** le port est exposé via Docker Compose
+
+**Exemple :**
+```
+localhost:8502 → conteneur:8501
+```
+
+Si le port est déjà utilisé, modifier dans `.env` :
+```env
+STREAMLIT_SERVER_PORT=8503
+```
+
+Puis relancer :
+```bash
+docker compose up -d
+```
+
+## Persistance des données
+
+Les données générées par l'application sont persistées sur la machine hôte grâce aux volumes Docker.
+
+**Volumes utilisés :**
+- `./outputs` → export des fichiers CSV
+- `./data` → données et exemples
+- `./models` → modèles entraînés
+
+Les fichiers restent disponibles même après un `docker compose down`.
+
+## Vérification de l'état (Healthcheck)
+
+Le conteneur inclut un healthcheck Streamlit.
+
+**Vérification :**
+```bash
+docker compose ps
+```
+
+**Statut attendu :**
+```
+Up (healthy)
+```
+
+## Logs
+
+Pour consulter les logs de l'application :
+```bash
+docker compose logs -f
+```
+
+## Arrêter l'application
+```bash
+docker compose down
+```
+
+Relancer ensuite est possible à tout moment :
+```bash
+docker compose up -d
+```
+
+## Nettoyage complet (optionnel)
+
+Pour supprimer les conteneurs et l'image Docker locale :
+```bash
+docker compose down --rmi local
+```
+
+Les dossiers montés (`outputs`, `data`, `models`) ne sont pas supprimés.
+
+## Mode développement (hors Docker)
+
+Il est également possible de lancer l'application sans Docker (mode développement), mais Docker est la méthode recommandée pour garantir la reproductibilité.
+
+## Résumé
+
+- ✔ Projet dockerisé
+- ✔ Lançable en 1 commande
+- ✔ Reproductible sur n'importe quel poste
+- ✔ Données persistantes
+- ✔ Logs et healthcheck disponibles
+- ✔ Configuration via `.env`
+
 ## Bonnes pratiques
 
 * Commencer avec des images **petites** (ex: 64x64) pour tester rapidement
 * Vérifier l’équilibre des classes
 * Tester différents classifieurs (`logistic`, `knn`, `rf`)
+
 * Ne versionner que les données brutes (`data/raw`) ; `data/processed` et `models` ne doivent pas être versionnés
