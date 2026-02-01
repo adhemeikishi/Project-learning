@@ -1,0 +1,17 @@
+Exemples d'utilisation rapides:
+
+1) Prétraiter (supposons que vous avez deux dossiers: data/raw/cat et data/raw/dog)
+python src/data_prep.py --data_dir data/raw --out data/processed/dataset.npz --img_size 64
+
+2) Entraîner
+python src/train.py --input data/processed/dataset.npz --model models/model.joblib --classifier logistic
+
+3) Évaluer
+python src/evaluate.py --input data/processed/dataset.npz --model models/model.joblib --out outputs/cm.png
+
+4) Prédire
+python src/predict.py --model models/model.joblib --image data/raw/cat/0001.jpg
+
+Conseils:
+- Ajustez --img_size selon la résolution et la complexité de vos images
+- Essayez différents classifieurs ('logistic', 'knn', 'rf')

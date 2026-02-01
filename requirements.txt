@@ -1,0 +1,11 @@
+Flask>=2.2
+numpy
+pandas
+scikit-learn
+Pillow
+matplotlib
+seaborn
+joblib
+python-dotenv
+pyyaml
+streamlit

@@ -1,0 +1,6 @@
+body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+.filename { font-weight: 700; color: #0b3a66; }
+.card-img-top { object-fit: cover; height: 220px; border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; }
+.shadow-sm { box-shadow: 0 6px 18px rgba(11,58,102,0.06) !important; }
+.btn-primary { background-color: #0b6ff1; border-color: #0b6ff1; }
+.btn-outline-secondary { color: #0b3a66; border-color: #e6edf6; }
